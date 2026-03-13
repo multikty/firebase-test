@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const messageInput = document.getElementById('message');
     const formSuccess = document.getElementById('form-success');
+    const submitBtn = document.getElementById('submit-btn');
 
     // Theme logic
     const currentTheme = localStorage.getItem('theme') || 'light';
@@ -80,31 +81,51 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         
         if (validateForm()) {
-            const formData = {
-                name: nameInput.value,
-                email: emailInput.value,
-                message: messageInput.value
-            };
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(inquiryForm);
             
-            console.log('Form Submitted:', formData);
-            
-            // Simulate API call
-            inquiryForm.style.display = 'none';
-            formSuccess.style.display = 'block';
-            
-            // Reset form after 5 seconds
-            setTimeout(() => {
-                inquiryForm.reset();
-                inquiryForm.style.display = 'block';
-                formSuccess.style.display = 'none';
-            }, 5000);
+            fetch(inquiryForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    inquiryForm.style.display = 'none';
+                    formSuccess.style.display = 'block';
+                    setTimeout(() => {
+                        inquiryForm.reset();
+                        inquiryForm.style.display = 'block';
+                        formSuccess.style.display = 'none';
+                        submitBtn.textContent = 'Send Inquiry';
+                        submitBtn.disabled = false;
+                    }, 5000);
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            alert(data["errors"].map(error => error["message"]).join(", "));
+                        } else {
+                            alert("Oops! There was a problem submitting your form");
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                alert("Oops! There was a problem submitting your form");
+            })
+            .finally(() => {
+                submitBtn.textContent = 'Send Inquiry';
+                submitBtn.disabled = false;
+            });
         }
     });
 
     function validateForm() {
         let isValid = true;
-        
-        // Reset errors
         document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
         
         if (nameInput.value.trim().length < 2) {

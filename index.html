@@ -25,23 +25,23 @@
 
         <div class="contact-form">
             <h2>Affiliation Inquiry</h2>
-            <form id="inquiry-form">
+            <form id="inquiry-form" action="https://formspree.io/f/multikty@gmail.com" method="POST">
                 <div class="form-group">
-                    <input type="text" id="name" placeholder="Name" required>
+                    <input type="text" id="name" name="name" placeholder="Name" required>
                     <span class="error-msg" id="name-error"></span>
                 </div>
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="email" id="email" name="_replyto" placeholder="Email" required>
                     <span class="error-msg" id="email-error"></span>
                 </div>
                 <div class="form-group">
-                    <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
+                    <textarea id="message" name="message" placeholder="Your Message" rows="4" required></textarea>
                     <span class="error-msg" id="message-error"></span>
                 </div>
                 <button type="submit" id="submit-btn">Send Inquiry</button>
             </form>
             <div id="form-success" class="success-msg" style="display: none;">
-                Thank you! Your inquiry has been sent.
+                Thank you! Your inquiry has been sent to multikty@gmail.com.
             </div>
         </div>
     </div>
