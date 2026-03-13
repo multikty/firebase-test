@@ -84,12 +84,17 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = '전송 중...';
             submitBtn.disabled = true;
 
-            const formData = new FormData(inquiryForm);
+            const data = {
+                name: nameInput.value,
+                email: emailInput.value,
+                message: messageInput.value
+            };
             
             fetch(inquiryForm.action, {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify(data),
                 headers: {
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
             })
@@ -106,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 5000);
                 } else {
                     response.json().then(data => {
-                        if (Object.hasOwn(data, 'errors')) {
-                            alert(data["errors"].map(error => error["message"]).join(", "));
+                        if (data && data.errors) {
+                            alert(data.errors.map(error => error.message).join(", "));
                         } else {
                             alert("오류가 발생했습니다. 다시 시도해 주세요.");
                         }
