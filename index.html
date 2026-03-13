@@ -1,47 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Number Generator</title>
+    <title>로또 번호 생성기</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="theme-toggle">
-            <button id="theme-btn">Dark Mode</button>
+            <button id="theme-btn">다크 모드</button>
         </div>
-        <h1>Lotto Number Generator</h1>
+        <h1>로또 번호 생성기</h1>
         
         <div class="generator">
             <div id="numbers" class="numbers"></div>
-            <button id="generate-btn">Generate Numbers</button>
+            <button id="generate-btn">번호 생성하기</button>
         </div>
 
         <div class="history">
-            <h2>History</h2>
+            <h2>최근 생성 기록</h2>
             <ul id="history-list"></ul>
         </div>
 
         <div class="contact-form">
-            <h2>Affiliation Inquiry</h2>
+            <h2>제휴 문의</h2>
             <form id="inquiry-form" action="https://formspree.io/f/multikty@gmail.com" method="POST">
                 <div class="form-group">
-                    <input type="text" id="name" name="name" placeholder="Name" required>
+                    <input type="text" id="name" name="name" placeholder="이름" required>
                     <span class="error-msg" id="name-error"></span>
                 </div>
                 <div class="form-group">
-                    <input type="email" id="email" name="_replyto" placeholder="Email" required>
+                    <input type="email" id="email" name="_replyto" placeholder="이메일" required>
                     <span class="error-msg" id="email-error"></span>
                 </div>
                 <div class="form-group">
-                    <textarea id="message" name="message" placeholder="Your Message" rows="4" required></textarea>
+                    <textarea id="message" name="message" placeholder="문의 내용" rows="4" required></textarea>
                     <span class="error-msg" id="message-error"></span>
                 </div>
-                <button type="submit" id="submit-btn">Send Inquiry</button>
+                <button type="submit" id="submit-btn">문의 보내기</button>
             </form>
             <div id="form-success" class="success-msg" style="display: none;">
-                Thank you! Your inquiry has been sent to multikty@gmail.com.
+                감사합니다! 문의 내용이 multikty@gmail.com으로 전송되었습니다.
             </div>
         </div>
     </div>

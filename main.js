@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setTheme(theme) {
         htmlElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
-        themeBtn.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        themeBtn.textContent = theme === 'dark' ? '라이트 모드' : '다크 모드';
     }
 
     // Lotto logic
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addToHistory(numbers) {
         const li = document.createElement('li');
-        const now = new Date().toLocaleTimeString();
+        const now = new Date().toLocaleTimeString('ko-KR');
         li.innerHTML = `<span>${now}</span> <strong>${numbers.join(', ')}</strong>`;
         historyList.prepend(li);
         
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         
         if (validateForm()) {
-            submitBtn.textContent = 'Sending...';
+            submitBtn.textContent = '전송 중...';
             submitBtn.disabled = true;
 
             const formData = new FormData(inquiryForm);
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         inquiryForm.reset();
                         inquiryForm.style.display = 'block';
                         formSuccess.style.display = 'none';
-                        submitBtn.textContent = 'Send Inquiry';
+                        submitBtn.textContent = '문의 보내기';
                         submitBtn.disabled = false;
                     }, 5000);
                 } else {
@@ -109,16 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (Object.hasOwn(data, 'errors')) {
                             alert(data["errors"].map(error => error["message"]).join(", "));
                         } else {
-                            alert("Oops! There was a problem submitting your form");
+                            alert("오류가 발생했습니다. 다시 시도해 주세요.");
                         }
                     });
                 }
             })
             .catch(error => {
-                alert("Oops! There was a problem submitting your form");
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
             })
             .finally(() => {
-                submitBtn.textContent = 'Send Inquiry';
+                submitBtn.textContent = '문의 보내기';
                 submitBtn.disabled = false;
             });
         }
@@ -129,18 +129,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
         
         if (nameInput.value.trim().length < 2) {
-            document.getElementById('name-error').textContent = 'Name must be at least 2 characters.';
+            document.getElementById('name-error').textContent = '이름은 최소 2자 이상이어야 합니다.';
             isValid = false;
         }
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailInput.value)) {
-            document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+            document.getElementById('email-error').textContent = '유효한 이메일 주소를 입력해 주세요.';
             isValid = false;
         }
         
         if (messageInput.value.trim().length < 10) {
-            document.getElementById('message-error').textContent = 'Message must be at least 10 characters.';
+            document.getElementById('message-error').textContent = '문의 내용은 최소 10자 이상이어야 합니다.';
             isValid = false;
         }
         
