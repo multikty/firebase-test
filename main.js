@@ -7,9 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inquiry Form elements
     const inquiryForm = document.getElementById('inquiry-form');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const messageInput = document.getElementById('message');
     const formSuccess = document.getElementById('form-success');
     const submitBtn = document.getElementById('submit-btn');
 
@@ -76,79 +73,37 @@ document.addEventListener('DOMContentLoaded', () => {
         return '#b0d840';
     }
 
-    // Form Validation & Submission
-    inquiryForm.addEventListener('submit', (e) => {
+    // Simple Formspree AJAX Submission
+    inquiryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        if (validateForm()) {
-            submitBtn.textContent = '전송 중...';
-            submitBtn.disabled = true;
+        submitBtn.textContent = '전송 중...';
+        submitBtn.disabled = true;
 
-            const data = {
-                name: nameInput.value,
-                email: emailInput.value,
-                message: messageInput.value
-            };
-            
-            fetch(inquiryForm.action, {
+        const formData = new FormData(inquiryForm);
+        
+        try {
+            const response = await fetch(inquiryForm.action, {
                 method: 'POST',
-                body: JSON.stringify(data),
+                body: formData,
                 headers: {
-                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
-            })
-            .then(response => {
-                if (response.ok) {
-                    inquiryForm.style.display = 'none';
-                    formSuccess.style.display = 'block';
-                    setTimeout(() => {
-                        inquiryForm.reset();
-                        inquiryForm.style.display = 'block';
-                        formSuccess.style.display = 'none';
-                        submitBtn.textContent = '문의 보내기';
-                        submitBtn.disabled = false;
-                    }, 5000);
-                } else {
-                    response.json().then(data => {
-                        if (data && data.errors) {
-                            alert(data.errors.map(error => error.message).join(", "));
-                        } else {
-                            alert("오류가 발생했습니다. 다시 시도해 주세요.");
-                        }
-                    });
-                }
-            })
-            .catch(error => {
-                alert("오류가 발생했습니다. 다시 시도해 주세요.");
-            })
-            .finally(() => {
-                submitBtn.textContent = '문의 보내기';
-                submitBtn.disabled = false;
             });
+
+            if (response.ok) {
+                inquiryForm.style.display = 'none';
+                formSuccess.style.display = 'block';
+                inquiryForm.reset();
+            } else {
+                const data = await response.json();
+                alert(data.errors ? data.errors.map(error => error.message).join(", ") : "전송 실패");
+            }
+        } catch (error) {
+            alert("서버 연결에 실패했습니다.");
+        } finally {
+            submitBtn.textContent = '문의 보내기';
+            submitBtn.disabled = false;
         }
     });
-
-    function validateForm() {
-        let isValid = true;
-        document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
-        
-        if (nameInput.value.trim().length < 2) {
-            document.getElementById('name-error').textContent = '이름은 최소 2자 이상이어야 합니다.';
-            isValid = false;
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailInput.value)) {
-            document.getElementById('email-error').textContent = '유효한 이메일 주소를 입력해 주세요.';
-            isValid = false;
-        }
-        
-        if (messageInput.value.trim().length < 10) {
-            document.getElementById('message-error').textContent = '문의 내용은 최소 10자 이상이어야 합니다.';
-            isValid = false;
-        }
-        
-        return isValid;
-    }
 });
