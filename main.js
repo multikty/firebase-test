@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeBtn = document.getElementById('theme-btn');
     const htmlElement = document.documentElement;
 
+    // Inquiry Form elements
+    const inquiryForm = document.getElementById('inquiry-form');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+    const formSuccess = document.getElementById('form-success');
+
     // Theme logic
     const currentTheme = localStorage.getItem('theme') || 'light';
     setTheme(currentTheme);
@@ -55,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         li.innerHTML = `<span>${now}</span> <strong>${numbers.join(', ')}</strong>`;
         historyList.prepend(li);
         
-        if (historyList.children.length > 10) {
+        if (historyList.children.length > 5) {
             historyList.removeChild(historyList.lastChild);
         }
     }
@@ -66,5 +73,56 @@ document.addEventListener('DOMContentLoaded', () => {
         if (number <= 30) return '#ff7272';
         if (number <= 40) return '#aaa';
         return '#b0d840';
+    }
+
+    // Form Validation & Submission
+    inquiryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (validateForm()) {
+            const formData = {
+                name: nameInput.value,
+                email: emailInput.value,
+                message: messageInput.value
+            };
+            
+            console.log('Form Submitted:', formData);
+            
+            // Simulate API call
+            inquiryForm.style.display = 'none';
+            formSuccess.style.display = 'block';
+            
+            // Reset form after 5 seconds
+            setTimeout(() => {
+                inquiryForm.reset();
+                inquiryForm.style.display = 'block';
+                formSuccess.style.display = 'none';
+            }, 5000);
+        }
+    });
+
+    function validateForm() {
+        let isValid = true;
+        
+        // Reset errors
+        document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+        
+        if (nameInput.value.trim().length < 2) {
+            document.getElementById('name-error').textContent = 'Name must be at least 2 characters.';
+            isValid = false;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+            document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+            isValid = false;
+        }
+        
+        if (messageInput.value.trim().length < 10) {
+            document.getElementById('message-error').textContent = 'Message must be at least 10 characters.';
+            isValid = false;
+        }
+        
+        return isValid;
     }
 });

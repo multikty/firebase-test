@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,13 +12,37 @@
             <button id="theme-btn">Dark Mode</button>
         </div>
         <h1>Lotto Number Generator</h1>
+        
         <div class="generator">
             <div id="numbers" class="numbers"></div>
             <button id="generate-btn">Generate Numbers</button>
         </div>
+
         <div class="history">
             <h2>History</h2>
             <ul id="history-list"></ul>
+        </div>
+
+        <div class="contact-form">
+            <h2>Affiliation Inquiry</h2>
+            <form id="inquiry-form">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Name" required>
+                    <span class="error-msg" id="name-error"></span>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email" required>
+                    <span class="error-msg" id="email-error"></span>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
+                    <span class="error-msg" id="message-error"></span>
+                </div>
+                <button type="submit" id="submit-btn">Send Inquiry</button>
+            </form>
+            <div id="form-success" class="success-msg" style="display: none;">
+                Thank you! Your inquiry has been sent.
+            </div>
         </div>
     </div>
     <script src="main.js"></script>
